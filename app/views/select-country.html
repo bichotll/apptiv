@@ -2,8 +2,10 @@
   <div ng-show="options == null">
     <p class="bg-danger text-center">Countries not available right now</p>
   </div>
-  <select class="center-block" ng-show="options != null" ng-focus="stopInterval()" ng-blur="startInterval()" >
-    <option ng-repeat="option in options" value="{{option}}" >{{option.country}}</option>
+  <select class="center-block"
+          ng-model="selected"
+          ng-show="options != null" ng-focus="stopInterval()" ng-blur="startInterval()"
+          ng-options="option.country for option in options" >
   </select>
 </div>
 

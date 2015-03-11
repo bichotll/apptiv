@@ -7,7 +7,6 @@
 angular.module('apptivationApp')
   .directive('selectCountry', function ($interval,countriesFactory) {
 
-
     function link(scope, element, attrs) {
       var timeoutId;
 
@@ -17,7 +16,6 @@ angular.module('apptivationApp')
       function updateOptions() {
         var optionsRequest = countriesFactory.getCountries();
         optionsRequest.success(function(data, status, headers, config) {
-          console.log(data, data.data);
           //workaround 400
           if (typeof data.data === 'undefined'){
             scope.options = null;
@@ -36,7 +34,6 @@ angular.module('apptivationApp')
         timeoutId = $interval(function() {
           updateOptions(); // update DOM
         }, 5000);
-        console.log('start');
       }
       startInterval();
 
@@ -46,21 +43,23 @@ angular.module('apptivationApp')
       function stopInterval(){
         $interval.cancel(timeoutId);
         timeoutId = null;
-        console.log('stop');
       }
 
       //assign functions to the scope
       scope.startInterval = startInterval;
       scope.stopInterval = stopInterval;
 
+      //no zombies
       element.on('$destroy', function() {
         stopInterval();
       });
     }
 
-
     return {
       restrict: 'E',
+      scope: {
+        selected: '='
+      },
       templateUrl: '../../views/select-country.html',
       link: link
     };
